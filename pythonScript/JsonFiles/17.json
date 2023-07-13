@@ -1,0 +1,15 @@
+{
+    "name": "Q",
+    "description": "This is a NFT collection of Alphabets Collectibles",
+    "image": "ipfs://bafybeifjft3uqjkzk2tlqm6pupwoiks5n2mswhjlyy6fom7vk76sko6eti/17.png",
+    "attributes": [
+        {
+            "trait_type": "Alphabet",
+            "value": "Q"
+        },
+        {
+            "trait_type": "Token ID",
+            "value": "17"
+        }
+    ]
+}

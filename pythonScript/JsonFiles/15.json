@@ -1,0 +1,15 @@
+{
+    "name": "O",
+    "description": "This is a NFT collection of Alphabets Collectibles",
+    "image": "ipfs://bafybeifjft3uqjkzk2tlqm6pupwoiks5n2mswhjlyy6fom7vk76sko6eti/15.png",
+    "attributes": [
+        {
+            "trait_type": "Alphabet",
+            "value": "O"
+        },
+        {
+            "trait_type": "Token ID",
+            "value": "15"
+        }
+    ]
+}
