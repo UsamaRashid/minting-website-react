@@ -1,7 +1,7 @@
-export const ContractAddress = "0x9fEcBB3A4447E3b8aF649708c4249Dc1eE26a022";
+export const ContractAddress = "0x2586A1FbbC8d4707860BC7703C5B60D196443776";
 export const ContractABI = [
   {
-    inputs: [{ internalType: "string", name: "_initBaseURI", type: "string" }],
+    inputs: [{ internalType: "string", name: "imageUri", type: "string" }],
     stateMutability: "nonpayable",
     type: "constructor",
   },
@@ -45,12 +45,7 @@ export const ContractABI = [
         name: "operator",
         type: "address",
       },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "approved",
-        type: "bool",
-      },
+      { indexed: false, internalType: "bool", name: "approved", type: "bool" },
     ],
     name: "ApprovalForAll",
     type: "event",
@@ -77,12 +72,7 @@ export const ContractABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
+      { indexed: true, internalType: "address", name: "from", type: "address" },
       { indexed: true, internalType: "address", name: "to", type: "address" },
       {
         indexed: true,
@@ -150,7 +140,10 @@ export const ContractABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
+    inputs: [
+      { internalType: "uint256", name: "tokenId", type: "uint256" },
+      { internalType: "string", name: "_name", type: "string" },
+    ],
     name: "mint",
     outputs: [],
     stateMutability: "payable",
@@ -241,15 +234,15 @@ export const ContractABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "string", name: "_newBaseURI", type: "string" }],
-    name: "setBaseURI",
+    inputs: [{ internalType: "uint256", name: "_newCost", type: "uint256" }],
+    name: "setCost",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "_newCost", type: "uint256" }],
-    name: "setCost",
+    inputs: [{ internalType: "string", name: "_newImageURI", type: "string" }],
+    name: "setImageURI",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
