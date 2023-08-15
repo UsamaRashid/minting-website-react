@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ethers } from "ethers";
 import { ContractABI, ContractAddress } from "./contractDetails";
 import { toast } from "react-toastify";
-const NFTCard = ({ tokenId, img, isMinted, addtoMintedToken }) => {
+import { AccountContext } from "../Context/AccountContext";
+const NFTCard = ({ tokenId, img, isMinted, addtoMintedToken, loadingData }) => {
   const [enteredName, setEnteredName] = useState("");
+  const { account, currentChainId, connectWallet, switchChain } =
+    useContext(AccountContext);
+
   const handleNameChange = (event) => {
     setEnteredName(event.target.value);
   };
@@ -31,12 +35,15 @@ const NFTCard = ({ tokenId, img, isMinted, addtoMintedToken }) => {
       });
       addtoMintedToken(tokenId);
     } catch (e) {
-      console.error(e);
-      toast.error(e.reason, {
+      console.error("e:", { ...e });
+      toast.error(e.info.error.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
   };
+
+  console.log("CARD:Account", account);
+  console.log("CARD:currentChainId", currentChainId);
 
   return (
     <div
@@ -46,8 +53,36 @@ const NFTCard = ({ tokenId, img, isMinted, addtoMintedToken }) => {
       <img className='' src={img} alt={tokenId} />
 
       <div className=' hover:backdrop-blur-sm bg-opacity-40 overlay absolute inset-0 flex items-center justify-center hover:bg-gradient-to-r hover:from-teal-400 hover:to-fuchsia-500 hover:text-transparent hover:bg-clip-text'>
-        {isMinted ? (
-          <h4 className='text-transparent text-3xl'>
+        {!account || !currentChainId ? (
+          !account ? (
+            <h4 className='text-transparent  text-center text-3xl '>
+              <span
+                className='text-1xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'
+                onClick={connectWallet}
+              >
+                Connect Metamask
+              </span>
+            </h4>
+          ) : !currentChainId ? (
+            <h4 className='text-transparent  text-center text-3xl '>
+              <span
+                className='text-1xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'
+                onClick={switchChain}
+              >
+                Switch Network
+              </span>
+            </h4>
+          ) : (
+            <div>None</div>
+          )
+        ) : loadingData ? (
+          <h4 className='text-transparent text-2xl'>
+            <span className='text-1xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'>
+              Loading...{" "}
+            </span>
+          </h4>
+        ) : isMinted ? (
+          <h4 className='text-transparent text-center text-2xl'>
             <span className='text-1xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'>
               Already Minted
             </span>
@@ -66,9 +101,7 @@ const NFTCard = ({ tokenId, img, isMinted, addtoMintedToken }) => {
                 console.log("Mint Button Clicked", tokenId);
                 if (
                   enteredName.charAt(0).toUpperCase() ===
-                    String.fromCharCode(64 + tokenId) ||
-                  enteredName.charAt(0).toUpperCase() ===
-                    String.fromCharCode(96 + tokenId)
+                  String.fromCharCode(96 + tokenId)
                 ) {
                   mintToken(tokenId);
                 } else {

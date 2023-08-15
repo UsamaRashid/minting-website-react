@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <>
-      <ToastContainer position='top-center' />
+      <ToastContainer position='top-center' autoClose={2500} />
       <Collection />
     </>
   );

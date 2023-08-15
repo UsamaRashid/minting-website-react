@@ -1,26 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { AplhabetsImages } from "./Images";
 import { ContractABI, ContractAddress } from "./contractDetails";
 import { ethers } from "ethers";
 import NFTCard from "./NFTCard";
+import { AccountContext } from "../Context/AccountContext";
 
 const Collection = () => {
+  const { account, currentChainId } = useContext(AccountContext);
   const [mintedTokens, setMintedTokens] = useState([]);
-
-  const connectWallet = async () => {
-    if (typeof window.ethereum !== "undefined") {
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        console.log("Connected to wallet");
-      } catch (error) {
-        console.error("Error connecting to wallet:", error);
-      }
-    } else {
-      console.error("Metamask is not installed");
-    }
-  };
-
+  const [loadingData, setLoadingData] = useState(true);
   const fetchMintedTokens = async () => {
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
@@ -36,21 +25,19 @@ const Collection = () => {
         try {
           await contract.ownerOf(i);
           tokens.push(i);
-        } catch (e) {
-          //   console.log("ee", e);
-        }
+        } catch (e) {}
       }
 
       setMintedTokens(tokens);
-      console.log("Tokens", tokens);
+      setLoadingData(false);
     } catch (error) {
       console.error("Error fetching minted tokens:", error);
     }
   };
   useEffect(() => {
-    connectWallet();
+    if (account == null || currentChainId == null) return;
     fetchMintedTokens();
-  }, []);
+  }, [account, currentChainId, loadingData]);
   const addtoMintedToken = (tokenId) => {
     setMintedTokens([...mintedTokens, tokenId]);
   };
@@ -74,6 +61,7 @@ const Collection = () => {
               img={data.img}
               isMinted={isMinted}
               addtoMintedToken={addtoMintedToken}
+              loadingData={loadingData}
             />
           );
         })}
